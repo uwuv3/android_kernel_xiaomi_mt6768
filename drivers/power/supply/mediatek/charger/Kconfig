@@ -197,3 +197,11 @@ config CHARGER_LN8000
 	  It depends on config MTK_SMART_BATTERY
 	  and config MTK_SWCHR_SUPPORT
 	  Set to Yes if LN8000 is used.
+
+config CHARGER_SC8551
+	bool "CHARGER_SC8551"
+	help
+	  This is to enable MediaTek supports to SC8551.
+	  It depends on config MTK_SMART_BATTERY
+	  and config MTK_SWCHR_SUPPORT
+	  Set to Yes if SC8551 is used.
