@@ -1357,6 +1357,14 @@ defined(CONFIG_MTK_CAM_SECURITY_SUPPORT)
 		#gce-event-cells = <1>;
 		#gce-subsys-cells = <2>;
 	};
+#ifdef CONFIG_MTK_MT6382_BDG
+	gce_mbox_bdg: gce_mbox_bdg {
+		compatible = "mediatek,mailbox-gce-bdg";
+		#mbox-cells = <3>;
+		#gce-event-cells = <1>;
+		#gce-subsys-cells = <2>;
+	};
+#endif
 
 #if defined(CONFIG_MTK_SEC_VIDEO_PATH_SUPPORT) || \
 	defined(CONFIG_MTK_CAM_SECURITY_SUPPORT)

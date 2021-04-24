@@ -19,8 +19,7 @@
 #include "ddp_info.h"
 #include "lcm_drv.h"
 
-
-#define SPI_SPEED		(1000000)
+#define SPI_SPEED		(27000000)
 #define HW_NUM			(1)
 
 enum DISP_BDG_ENUM {
