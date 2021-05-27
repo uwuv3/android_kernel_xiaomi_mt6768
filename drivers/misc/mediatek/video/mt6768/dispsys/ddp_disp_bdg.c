@@ -230,7 +230,6 @@ do { \
 
 int bdg_is_bdg_connected(void)
 {
-	DISPFUNCSTART();
 	if (mt6382_connected == 0) {
 		unsigned int ret = 0;
 #ifdef CONFIG_MTK_MT6382_BDG
@@ -244,6 +243,9 @@ int bdg_is_bdg_connected(void)
 		else
 			mt6382_connected = 1;
 	}
+
+	DISPMSG("%s, mt6382_connected=%d\n", __func__, mt6382_connected);
+
 	return mt6382_connected;
 }
 
@@ -1654,7 +1656,7 @@ int bdg_tx_vdo_timing_set(enum DISP_BDG_ENUM module,
 		DSI_OUTREG32(cmdq, TX_REG[i]->DSI_TX_VBP_NL,
 					(tx_params->vertical_backporch));
 		DSI_OUTREG32(cmdq, TX_REG[i]->DSI_TX_VFP_NL,
-					(tx_params->vertical_frontporch - 1));
+					(tx_params->vertical_frontporch));
 
 		DSI_OUTREG32(cmdq, TX_REG[i]->DSI_TX_HSA_WC, hsa_byte);
 		DSI_OUTREG32(cmdq, TX_REG[i]->DSI_TX_HBP_WC, hbp_byte);
@@ -5853,9 +5855,11 @@ void bdg_first_init(void)
 	EFUSE = (struct BDG_EFUSE_REGS *)DISPSYS_BDG_EFUSE_BASE;
 	GPIO = (struct BDG_GPIO_REGS *)DISPSYS_BDG_GPIO_BASE;
 	TX_CMDQ_REG[0] = (struct DSI_TX_CMDQ_REGS *)(DISPSYS_BDG_TX_DSI0_BASE + 0xd00);
-
-	bdg_tx_pull_6382_reset_pin();
+  
+	/* Huaqin modify for HQ-135591 by caogaojie at 2021/05/15 start */
 	clk_buf_disp_ctrl(true);
+	mdelay(3);
+	/* Huaqin modify for HQ-135591 by caogaojie at 2021/05/15 end */
 
 	spislv_init();
 	spislv_switch_speed_hz(SPI_TX_LOW_SPEED_HZ, SPI_RX_LOW_SPEED_HZ);
