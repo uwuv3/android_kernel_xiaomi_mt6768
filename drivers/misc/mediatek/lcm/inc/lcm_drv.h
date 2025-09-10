@@ -1,6 +1,5 @@
 /*
  * Copyright (C) 2015 MediaTek Inc.
- * Copyright (C) 2021 XiaoMi, Inc.
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License version 2 as
@@ -95,13 +94,10 @@ enum LCM_IOCTL {
 	LCM_IOCTL_NULL = 0,
 };
 
-
-
 enum LCM_Send_Cmd_Mode {
 	LCM_SEND_IN_CMD = 0,
 	LCM_SEND_IN_VDO
 };
-
 
 /* DBI related enumerations */
 
@@ -543,7 +539,6 @@ struct dynamic_fps_info {
 	/*unsigned int idle_check_interval;*//*ms*/
 };
 
-
 /*DynFPS*/
 enum DynFPS_LEVEL {
 	DFPS_LEVEL0 = 0,
@@ -597,7 +592,6 @@ struct dfps_info {
 	/*real fps during active*/
 	unsigned int vact_timing_fps_dyn;
 };
-
 
 struct LCM_DSI_PARAMS {
 	enum LCM_DSI_MODE_CON mode;
@@ -686,6 +680,8 @@ struct LCM_DSI_PARAMS {
 	unsigned int cont_clock;
 	unsigned int ufoe_enable;
 	unsigned int dsc_enable;
+	unsigned int bdg_dsc_enable;
+	unsigned int bdg_ssc_disable;
 	struct LCM_UFOE_CONFIG_PARAMS ufoe_params;
 	struct LCM_DSC_CONFIG_PARAMS dsc_params;
 	unsigned int edp_panel;
@@ -747,7 +743,6 @@ struct LCM_DSI_PARAMS {
 	/*for ARR*/
 	unsigned int dynamic_fps_levels;
 	struct dynamic_fps_info dynamic_fps_table[DYNAMIC_FPS_LEVELS];
-
 #ifdef CONFIG_MTK_HIGH_FRAME_RATE
 	/****DynFPS start****/
 	unsigned int dfps_enable;
@@ -802,7 +797,6 @@ struct LCM_PARAMS {
 	unsigned int min_luminance;
 	unsigned int average_luminance;
 	unsigned int max_luminance;
-
 #ifdef CONFIG_MTK_HIGH_FRAME_RATE
 	enum LCM_Send_Cmd_Mode sendmode;
 #endif
@@ -978,7 +972,6 @@ struct LCM_UTIL_FUNCS {
 		void *cmdq, unsigned int cmd,
 		unsigned char count, unsigned char *para_list,
 		unsigned char force_update, enum LCM_Send_Cmd_Mode sendmode);
-
 };
 enum LCM_DRV_IOCTL_CMD {
 	LCM_DRV_IOCTL_ENABLE_CMD_MODE = 0x100,
