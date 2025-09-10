@@ -1412,7 +1412,11 @@ defined(CONFIG_MTK_CAM_SECURITY_SUPPORT)
 
 	swtp: swtp {
 		compatible = "mediatek, swtp-eint";
+#ifdef CONFIG_TARGET_PRODUCT_SELENECOMMON
+		swtp-gpio = <&pio 56 0>;
+#else
 		ant_sw_gpios = <&pio 72 0>;
+#endif
 	};
 
 	mt6358_gauge {
@@ -2274,6 +2278,12 @@ defined(CONFIG_MTK_CAM_SECURITY_SUPPORT)
 		reg = <0 0x11c90000 0 0x1000>;
 	};
 
+#ifdef CONFIG_TARGET_PRODUCT_SELENECOMMON
+	msdc1_ins:msdc1_ins@0 {
+		compatible = "mediatek,mt6768-sdcard-ins";
+	};
+#endif
+
 	usb1p_sif@11210000 {
 		compatible = "mediatek,usb1p_sif";
 		reg = <0 0x11210000 0 0x10000>;
@@ -2400,9 +2410,11 @@ defined(CONFIG_MTK_CAM_SECURITY_SUPPORT)
 		mtk_spk_i2s_out = <3>;
 		mtk_spk_i2s_in = <0>;
 		/* mtk_spk_i2s_mck = <3>; */
+#ifndef CONFIG_TARGET_PRODUCT_SELENECOMMON
 		mediatek,speaker-codec {
 			sound-dai = <&speaker_amp>;
 		};
+#endif
 	};
 
 	snd_scp_spk: snd_scp_spk {
@@ -2827,6 +2839,13 @@ defined(CONFIG_MTK_CAM_SECURITY_SUPPORT)
 		compatible = "mediatek, dsi_te-eint";
 		status = "disabled";
 	};
+
+#ifdef CONFIG_TARGET_PRODUCT_SELENECOMMON
+	dsi_err_flag: dsi_err_flag {
+		compatible = "mediatek, dsi_err-flag";
+		status = "disabled";
+	};
+#endif
 
 	mm_mutex@14016000 {
 		compatible = "mediatek,mm_mutex";
@@ -3428,7 +3447,15 @@ defined(CONFIG_MTK_CAM_SECURITY_SUPPORT)
 	mt_charger: mt_charger {
 		compatible = "mediatek,mt-charger";
 	};
+#ifdef CONFIG_TARGET_PRODUCT_SELENECOMMON
+	onewire_gpio: onewire_gpio {
+		compatible = "xiaomi,onewire_gpio";
+	};
 
+	maxim_ds28e16: maxim_ds28e16 {
+		compatible = "maxim,ds28e16";
+	};
+#endif
 	lk_charger: lk_charger {
 		compatible = "mediatek,lk_charger";
 		enable_anime;
@@ -3911,7 +3938,7 @@ defined(CONFIG_MTK_CAM_SECURITY_SUPPORT)
 #ifdef CONFIG_CHARGER_RT9471
 #include "mediatek/rt9471.dtsi"
 #endif
-#ifdef CONFIG_TCPC_RT1711H
+#if defined(CONFIG_TCPC_RT1711H) || defined(CONFIG_TARGET_PRODUCT_SELENECOMMON)
 #include "mediatek/tcpc_config.dtsi"
 #endif
 #ifdef CONFIG_MTK_ENABLE_GENIEZONE
