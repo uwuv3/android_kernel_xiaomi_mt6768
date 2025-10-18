@@ -181,3 +181,19 @@ config CHARGER_BQ25601
 	  It depends on config MTK_SMART_BATTERY
 	  and config MTK_SWCHR_SUPPORT
 	  Set to Yes if BQ25601 is used.
+
+config CHARGER_BQ2589X
+	bool "CHARGER_BQ2589X"
+	help
+	  This is to enable MediaTek supports to BQ2589X.
+	  It depends on config MTK_SMART_BATTERY
+	  and config MTK_SWCHR_SUPPORT
+	  Set to Yes if BQ2589X is used.
+
+config CHARGER_LN8000
+	bool "CHARGER_LN8000"
+	help
+	  This is to enable MediaTek supports to LN8000.
+	  It depends on config MTK_SMART_BATTERY
+	  and config MTK_SWCHR_SUPPORT
+	  Set to Yes if LN8000 is used.
