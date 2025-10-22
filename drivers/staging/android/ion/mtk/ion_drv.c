@@ -421,8 +421,7 @@ static long ion_sys_cache_sync(struct ion_client *client,
 			if (buffer->kmap_cnt != 0) {
 				sync_va = (unsigned long)buffer->vaddr;
 				ret = __cache_sync_by_range(client, sync_type,
-							    sync_va, sync_size,
-							    1);
+							    sync_va, sync_size);
 				if (ret < 0)
 					goto err;
 				goto out;
