@@ -425,6 +425,9 @@ static inline unsigned int virq_to_hwirq(unsigned int virq)
 	return hwirq;
 }
 /* end for irq check */
+#ifdef CONFIG_MTK_MT6382_BDG
+extern void disp_init_bdg_gce_obj(void);
+#endif
 
 static int disp_probe_1(void)
 {
@@ -560,6 +563,10 @@ static int disp_probe_1(void)
 #endif
 	ddp_path_init();
 	disp_m4u_init();
+
+#ifdef CONFIG_MTK_MT6382_BDG
+	disp_init_bdg_gce_obj();
+#endif
 
 	pr_info("disp driver(1) %s end\n", __func__);
 	/* NOT_REFERENCED(class_dev); */
