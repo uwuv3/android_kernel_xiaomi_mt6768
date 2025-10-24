@@ -640,7 +640,6 @@ static int mtkfb_blank(int blank_mode, struct fb_info *info)
 int mtkfb_set_backlight_level(unsigned int level)
 {
 	bool aal_is_support = disp_aal_is_support();
-
 	MTKFB_FUNC();
 	DISPDBG("mtkfb_set_backlight_level:%d Start\n",
 		level);
@@ -3148,7 +3147,6 @@ static void mtkfb_late_resume(void)
 	DISPMSG("[FB Driver] enter late_resume\n");
 
 	ret = primary_display_resume();
-
 	if (ret) {
 		DISPERR("primary display resume failed\n");
 		return;

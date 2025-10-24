@@ -10,5 +10,4 @@
 # MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
 # GNU General Public License for more details.
 #
-
-obj-y += hifi4dsp_spi.o
+obj-y += spi_slave.o
