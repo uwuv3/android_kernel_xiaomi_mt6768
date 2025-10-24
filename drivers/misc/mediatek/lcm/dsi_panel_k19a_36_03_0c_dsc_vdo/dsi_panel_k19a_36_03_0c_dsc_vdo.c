@@ -108,7 +108,7 @@ static struct LCM_UTIL_FUNCS lcm_util;
 #ifndef TRUE
 #define TRUE 1
 #endif
-
+ 
 #ifndef FALSE
 #define FALSE 0
 #endif
