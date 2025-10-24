@@ -1379,7 +1379,6 @@ defined(CONFIG_MTK_CAM_SECURITY_SUPPORT)
 		token_gpr_set4 = /bits/ 16 <CMDQ_SYNC_TOKEN_GPR_SET_4>;
 	};
 #endif
-#endif
 
 #if defined(CONFIG_MTK_SEC_VIDEO_PATH_SUPPORT) || \
 	defined(CONFIG_MTK_CAM_SECURITY_SUPPORT)
@@ -2789,6 +2788,7 @@ defined(CONFIG_MTK_CAM_SECURITY_SUPPORT)
 			"TOP_ULPOSC1_D2",
 			"TOP_ULPOSC1_D8";
 
+#ifdef CONFIG_MTK_MT6382_BDG
 
 		mboxes = <&gce_mbox_bdg 0 0 CMDQ_THR_PRIO_4>,
 			<&gce_mbox_bdg 1 0 CMDQ_THR_PRIO_4>,
@@ -2827,6 +2827,8 @@ defined(CONFIG_MTK_CAM_SECURITY_SUPPORT)
 			<&gce_mbox_bdg CMDQ_BRIDGE_EVENT_DSI0_IRQ_ENG_EVENT>,
 			<&gce_mbox_bdg CMDQ_BRIDGE_EVENT_DSI0_DONE_ENG_EVENT>,
 			<&gce_mbox_bdg CMDQ_BRIDGE_EVENT_DSI0_TARGET_LINE_EVENT>;
+
+#endif
 	};
 
 	dsi_te: dsi_te {
