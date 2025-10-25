@@ -909,38 +909,6 @@ static void process_dbg_opt(const char *opt)
 	if (strncmp(opt, "helper", 6) == 0) {
 		/*ex: echo helper:DISP_OPT_BYPASS_OVL,0 > /d/mtkfb */
 		do_helper_opt(opt);
-	} else if (strncmp(opt, "mipi_hopping:on", 15) == 0) {
-		if (pgc->state == DISP_SLEPT) {
-			DISPWARN("primary display is already slept\n");
-			return;
-		}
-		primary_display_idlemgr_kick(__func__, 1);
-		if (dpmgr_path_is_busy(pgc->dpmgr_handle))
-			dpmgr_wait_event_timeout(pgc->dpmgr_handle,
-				DISP_PATH_EVENT_FRAME_DONE, HZ * 1);
-		DSI_Stop(DISP_MODULE_DSI0, NULL);
-
-#ifdef CONFIG_MTK_MT6382_BDG
-		bdg_mipi_clk_change(1, 1);
-#endif
-
-		DSI_Start(DISP_MODULE_DSI0, NULL);
-	} else if (strncmp(opt, "mipi_hopping:off", 16) == 0) {
-		if (pgc->state == DISP_SLEPT) {
-			DISPWARN("primary display is already slept\n");
-			return;
-		}
-		primary_display_idlemgr_kick(__func__, 1);
-		if (dpmgr_path_is_busy(pgc->dpmgr_handle))
-			dpmgr_wait_event_timeout(pgc->dpmgr_handle,
-				DISP_PATH_EVENT_FRAME_DONE, HZ * 1);
-		DSI_Stop(DISP_MODULE_DSI0, NULL);
-
-#ifdef CONFIG_MTK_MT6382_BDG
-		bdg_mipi_clk_change(1, 0);
-#endif
-
-		DSI_Start(DISP_MODULE_DSI0, NULL);
 	} else if (strncmp(opt, "switch_mode:", 12) == 0) {
 		int session_id = MAKE_DISP_SESSION(DISP_SESSION_PRIMARY, 0);
 		int sess_mode;
@@ -1056,7 +1024,7 @@ static void process_dbg_opt(const char *opt)
 
 	} else if (strncmp(opt, "xdump", 5) == 0) {
 
-		bdg_dsi_dump_reg(DISP_BDG_DSI0, 1);
+		bdg_dsi_dump_reg(DISP_BDG_DSI0);
 
 	} else if (strncmp(opt, "bdg_int", 7) == 0) {
 		struct LCM_PARAMS *lcm_param = NULL;
@@ -1084,7 +1052,7 @@ static void process_dbg_opt(const char *opt)
 
 		data_config = dpmgr_path_get_last_config(pgc->dpmgr_handle);
 		memcpy(&(data_config->dispif_config), lcm_param,
-			sizeof(struct LCM_PARAMS));
+		       sizeof(struct LCM_PARAMS));
 
 		bdg_common_init_for_rx_pat(DISP_BDG_DSI0, data_config, NULL);
 
@@ -1725,52 +1693,8 @@ static void process_dbg_opt(const char *opt)
 			save_bmp("/sdcard/dump_output.bmp", composed_buf, w, h);
 		} else
 			DISPERR("error to parse cmd %s\n", opt);
-#ifdef CONFIG_MTK_HIGH_FRAME_RATE
-	} else if (!strncmp(opt, "set_cfg_id:", 11)) {
-		char *p = (char *)opt + 11;
-		unsigned int cfg_id = 0;
-
-		ret = kstrtouint(p, 10, &cfg_id);
-		if (ret) {
-			DISPWARN("%d error to parse cmd %s\n", __LINE__, opt);
-			return;
-		}
-
-		DDPMSG("debug:set_cfg_id:%d start\n", cfg_id);
-		primary_display_dynfps_chg_fps(cfg_id);
-		g_force_cfg_id = cfg_id;
-		DDPMSG("debug:set_cfg_id:%d end\n", cfg_id);
-	} else if (!strncmp(opt, "enable_force_fps:", 17)) {
-		char *p = (char *)opt + 17;
-		unsigned int enable_force_fps = 0;
-
-		ret = kstrtouint(p, 10, &enable_force_fps);
-
-		if (ret) {
-			DISPWARN("%d error to parse cmd %s\n", __LINE__, opt);
-			return;
-		}
-
-		g_force_cfg = !!enable_force_fps;
-		DDPMSG("debug:g_force_cfg:%d\n", g_force_cfg);
-
-	} else if (!strncmp(opt, "get_multi_cfg", 13)) {
-		struct multi_configs cfgs;
-		unsigned int i = 0;
-		struct dyn_config_info *dyn_info = NULL;
-
-		memset(&cfgs, 0, sizeof(cfgs));
-		primary_display_get_multi_configs(&cfgs);
-
-		DISPMSG("debug:get_multi_cfg:=%d\n", cfgs.config_num);
-
-		for (i = 0; i < cfgs.config_num &&
-			cfgs.config_num <= MULTI_CONFIG_NUM; i++) {
-			dyn_info = &(cfgs.dyn_cfgs[i]);
-			DISPMSG("debug:%d,%dfps\n", i, dyn_info->vsyncFPS);
-		}
-#endif
 	}
+
 #ifdef CONFIG_MTK_ENG_BUILD
 	if (strncmp(opt, "rdma_threshold:", 15) == 0) {
 		ret = sscanf(opt, "rdma_threshold:%d,%d,%d,%d,%d\n",
